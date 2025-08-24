@@ -4,9 +4,9 @@ import scrapy
 
 
 class QuotesSpider(scrapy.Spider):
-    name = "quotes"
+    name = "quotes" # spider name
 
-    async def start_requests(self):
+    def start_requests(self):
         urls = [
             "https://quotes.toscrape.com/page/1/",
             "https://quotes.toscrape.com/page/2/",
@@ -19,3 +19,6 @@ class QuotesSpider(scrapy.Spider):
         filename = f"quotes-{page}.html"
         Path(filename).write_bytes(response.body)
         self.log(f"Saved file {filename}")
+
+
+# run the spider( scrapy crawl quotes )
