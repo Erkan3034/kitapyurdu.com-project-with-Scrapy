@@ -21,4 +21,4 @@ class QuotesSpider(scrapy.Spider):
         self.log(f"Saved file {filename}")
 
 
-# run the spider( scrapy crawl quotes )
+# run the spider()
