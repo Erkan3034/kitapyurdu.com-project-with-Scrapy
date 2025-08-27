@@ -15,7 +15,7 @@ class QuotesSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        page = response.url.split("/")[-2]
+        page = response.url.split("/")[-2] # get the page number
         filename = f"quotes-{page}.html"
         Path(filename).write_bytes(response.body)
         self.log(f"Saved file {filename}")
