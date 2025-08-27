@@ -23,14 +23,18 @@ class QuotesSpider(scrapy.Spider):
     """
     def parse(self, response):
         quotes = response.css("div.quote")
-        title = quotes.css("span.text::text").extract_first() # get the text of the quote
-        author = quotes.css("small.author::text").extract_first() # get the author of the quote
-        tags = quotes.css("div.tags a.tag::text").extract_first() # get the tags of the quote
-        yield { # yield the data to the pipeline 
-            "title": title,
-            "author": author,
-            "tags": tags,
-        }
+        
+        for quote in quotes:
+            yield {
+                "text": quote.css("span.text::text").get(),
+                "author": quote.css("small.author::text").get(), 
+                "tags": quote.css("div.tags a.tag::text").getall(),
+            }
+        
+        # Sonraki sayfaya git
+        next_page = response.css('li.next a::attr(href)').get()
+        if next_page:
+            yield response.follow(next_page, self.parse)
 
 
 
