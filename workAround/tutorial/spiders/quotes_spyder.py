@@ -6,19 +6,32 @@ import scrapy
 class QuotesSpider(scrapy.Spider):
     name = "quotes" # spider name
 
-    def start_requests(self):
+    start_urls = [
+        "https://quotes.toscrape.com/page/1/",
+        "https://quotes.toscrape.com/page/2/",
+    ]
+
+
+
+    """def start_requests(self):
         urls = [
             "https://quotes.toscrape.com/page/1/",
             "https://quotes.toscrape.com/page/2/",
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
-
+    """
     def parse(self, response):
-        page = response.url.split("/")[-2] # get the page number
-        filename = f"quotes-{page}.html"
-        Path(filename).write_bytes(response.body)
-        self.log(f"Saved file {filename}")
+        quotes = response.css("div.quote")
+        title = quotes.css("span.text::text").extract_first() # get the text of the quote
+        author = quotes.css("small.author::text").extract_first() # get the author of the quote
+        tags = quotes.css("div.tags a.tag::text").extract_first() # get the tags of the quote
+        yield { # yield the data to the pipeline 
+            "title": title,
+            "author": author,
+            "tags": tags,
+        }
+
 
 
 # run the spider()
