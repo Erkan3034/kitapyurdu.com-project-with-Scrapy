@@ -23,13 +23,16 @@ class QuotesSpider(scrapy.Spider):
     """
     def parse(self, response):
         quotes = response.css("div.quote")
-        
-        for quote in quotes:
-            yield {
-                "text": quote.css("span.text::text").get(),
-                "author": quote.css("small.author::text").get(), 
-                "tags": quote.css("div.tags a.tag::text").getall(),
-            }
+        with open("quotes.txt", "a", encoding="utf-8") as file:
+            for quote in quotes:
+                text = quote.css("span.text::text").get()
+                author = quote.css("small.author::text").get()
+                tags = quote.css("div.tags a.tag::text").getall()
+                
+                file.write(f"Text: {text}\n")
+                file.write(f"Author: {author}\n")
+                file.write(f"Tags: {str(tags)}\n")
+                file.write("************************************************************\n")
         
         # Sonraki sayfaya git
         next_page = response.css('li.next a::attr(href)').get()
