@@ -35,9 +35,9 @@ class QuotesSpider(scrapy.Spider):
                 file.write("************************************************************\n")
         
         # Sonraki sayfaya git
-        next_page = response.css('li.next a::attr(href)').get()
+        next_page = response.css('li.next a::attr(href)').get() 
         if next_page:
-            yield response.follow(next_page, self.parse)
+            yield response.follow(next_page, self.parse) # next page'i takip et
 
 
 
