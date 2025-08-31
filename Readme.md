@@ -126,6 +126,8 @@ response.css('div p')                # div içindeki tüm p elementleri
 
 """
 # örnek sorgu:
+>>> scrapy shell https://www.kitapyurdu.com/cok-satan-kitaplar/haftalik/1.html
+
 >>> response.css('div.name.ellipsis a span::text').extract()
 
 sorgu sonucu:
