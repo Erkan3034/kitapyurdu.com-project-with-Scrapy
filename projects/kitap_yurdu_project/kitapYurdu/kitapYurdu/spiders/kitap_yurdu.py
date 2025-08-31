@@ -44,43 +44,41 @@ class KitapYurduSpider(scrapy.Spider):
             # Yeni bir item objesi oluşturuyoruz
             item = KitapyurduItem()
             
-            # Kitap adını alıyoruz - genellikle 'name' class'ında bulunur
-            title_element = book.css('div.name a::text').get()
+            # Kitap adını alıyoruz - 'name ellipsis' class'ında bulunur
+            title_element = book.css('div.name a span::text').get()
+            if not title_element:
+                title_element = book.css('div.name a::text').get()
+            if not title_element:
+                title_element = book.css('.name a::text').get()
             if not title_element:
                 title_element = book.css('.product-title a::text').get()
-            if not title_element:
-                title_element = book.css('h3 a::text').get()
-            if not title_element:
-                title_element = book.css('.name::text').get()
             
             item['title'] = title_element.strip() if title_element else 'N/A'
             
-            # Yazar adını alıyoruz
-            author_element = book.css('div.author a::text').get()
+            # Yazar adını alıyoruz - 'author compact ellipsis' class'ından
+            author_element = book.css('div.author.compact a::text').get()
             if not author_element:
-                author_element = book.css('.author::text').get()
+                author_element = book.css('div.author a span::text').get()
             if not author_element:
-                author_element = book.css('.author a::text').get()
+                author_element = book.css('div.author a::text').get()
             
             item['author'] = author_element.strip() if author_element else 'N/A'
             
-            # Yayınevi bilgisini alıyoruz
-            publisher_element = book.css('div.publisher a::text').get()
+            # Yayınevi bilgisini alıyoruz - 'publisher' class'ından
+            publisher_element = book.css('div.publisher a span::text').get()
             if not publisher_element:
-                publisher_element = book.css('.publisher::text').get()
+                publisher_element = book.css('div.publisher a::text').get()
             if not publisher_element:
                 publisher_element = book.css('.publisher a::text').get()
             
             item['publisher'] = publisher_element.strip() if publisher_element else 'N/A'
             
-            # Fiyat bilgisini alıyoruz
-            price_element = book.css('div.price-new::text').get()
+            # Fiyat bilgisini alıyoruz - 'price-new' class'ından value span'ı
+            price_element = book.css('div.price-new .value::text').get()
             if not price_element:
-                price_element = book.css('.price .value::text').get()
+                price_element = book.css('div.price .value::text').get()
             if not price_element:
-                price_element = book.css('.price::text').get()
-            if not price_element:
-                price_element = book.css('.price-current::text').get()
+                price_element = book.css('.price-new::text').get()
             
             item['price'] = price_element.strip() if price_element else 'N/A'
             
@@ -118,23 +116,23 @@ class KitapYurduSpider(scrapy.Spider):
             
             item['rating'] = rating_element.strip() if rating_element else 'N/A'
             
-            # Kitap kapak resminin URL'ini alıyoruz
-            image_url = book.css('img::attr(src)').get()
+            # Kitap kapak resminin URL'ini alıyoruz - 'image' class'ından
+            image_url = book.css('div.image img::attr(src)').get()
             if not image_url:
-                image_url = book.css('.product-image img::attr(src)').get()
+                image_url = book.css('.cover img::attr(src)').get()
+            if not image_url:
+                image_url = book.css('img::attr(src)').get()
             
             if image_url and not image_url.startswith('http'):
                 image_url = response.urljoin(image_url)
             item['image_url'] = image_url if image_url else 'N/A'
             
-            # Kitap detay sayfasının URL'ini alıyoruz
+            # Kitap detay sayfasının URL'ini alıyoruz - 'name' class'ından
             book_url = book.css('div.name a::attr(href)').get()
             if not book_url:
-                book_url = book.css('.product-title a::attr(href)').get()
+                book_url = book.css('div.image a::attr(href)').get()
             if not book_url:
-                book_url = book.css('h3 a::attr(href)').get()
-            if not book_url:
-                book_url = book.css('a::attr(href)').get()
+                book_url = book.css('.pr-img-link::attr(href)').get()
             
             if book_url and not book_url.startswith('http'):
                 book_url = response.urljoin(book_url)
