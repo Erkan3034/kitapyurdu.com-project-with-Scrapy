@@ -4,4 +4,6 @@
 # your spiders.
 
 
-# response.css('div.name.ellipsis a span::text').extract()
+# response.css('div.name.ellipsis a span::text').extract() -> bununla kitap adlarını alabiliriz.
+
+# response.css('div.author span a span::text').extract() -> bununla yazar adlarını alabiliriz.
