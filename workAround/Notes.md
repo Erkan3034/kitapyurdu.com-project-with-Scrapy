@@ -124,6 +124,15 @@ response.css('#main')                # main id'si olan element
 response.css('div > p')              # div'in direkt alt p elementleri
 response.css('div p')                # div içindeki tüm p elementleri
 
+"""
+>>> response.css('div.name.ellipsis a span::text').extract()
+
+['Telefon Melefon Yok', 'Sarı Yüz', 'Basit Türkiye Tarihi', 'Engereğin Gözü', 'Biomortem / Glia', 'Robonlar 2 / Bir Hayal Operasyonu', 'Gökyüzünde Nehirler Var', 'Güneşsiz 1: Cehennem Diskosu', 'Erişkin Acil Servis Order-Reçete El Kitabı', 'Robonlar / Bir Kaçış Operasyonu', 'Saatleri Ayarlama Enstitüsü', 'Anne Terliği', 'Gece Yarısı Kütüphanesi', 'Pediatrik Acil Servis Order-Reçete El Kitabı ', 'El Kızı', 'Atomik Alışkanlıklar', 'Martin Eden', 'Yaşamak', 'Hapı Yuttuk Eczanesi', 'Kalk Bi Dopamin Demle']
+>>> 
+
+"""
+
+
 # Attribute seçimi
 response.css('a::attr(href)')        # href attribute'u
 response.css('img::attr(src)')       # src attribute'u
@@ -138,6 +147,7 @@ response.css('li:first-child')       # İlk li elementi
 response.css('li:last-child')        # Son li elementi
 response.css('li:nth-child(2)')      # 2. li elementi
 ```
+
 
 ### XPath Seçiciler:
 
