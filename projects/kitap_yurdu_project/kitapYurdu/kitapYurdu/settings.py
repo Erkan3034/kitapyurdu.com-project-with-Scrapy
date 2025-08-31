@@ -85,3 +85,32 @@ DOWNLOAD_DELAY = 1
 
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
+
+# Feed export ayarları - çıktı dosyalarını ayarlıyoruz
+# JSON, CSV ve Excel formatlarında çıktı alabilirsiniz
+FEEDS = {
+    'kitaplar.json': {
+        'format': 'json',
+        'encoding': 'utf8',
+        'store_empty': False,
+        'fields': ['title', 'author', 'publisher', 'price', 'original_price', 'discount', 'rating', 'image_url', 'book_url'],
+    },
+    'kitaplar.csv': {
+        'format': 'csv',
+        'encoding': 'utf8',
+        'store_empty': False,
+        'fields': ['title', 'author', 'publisher', 'price', 'original_price', 'discount', 'rating', 'image_url', 'book_url'],
+    },
+}
+
+# User-Agent ayarı - web sitesinin bizi engellemesini önlemek için
+USER_AGENT = 'kitapYurdu (+http://www.yourdomain.com)'
+
+# Saygılı crawling için ayarlar
+DOWNLOAD_DELAY = 2  # İstekler arasında 2 saniye bekle
+RANDOMIZE_DOWNLOAD_DELAY = 0.5  # ±50% rastgele gecikme ekle
+CONCURRENT_REQUESTS_PER_DOMAIN = 1  # Aynı anda sadece 1 istek gönder
+
+# Retry ayarları
+RETRY_TIMES = 3  # Hatalı istekleri 3 kez tekrar dene
+RETRY_HTTP_CODES = [500, 502, 503, 504, 408, 429]  # Bu HTTP kodlarında tekrar dene
